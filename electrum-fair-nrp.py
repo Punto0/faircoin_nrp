@@ -101,7 +101,7 @@ def make_transaction_from_address(address_origin, address_end, amount):
     try:
         tx = wallet.make_unsigned_transaction(coins, output, change_addr=address_origin)
     except NotEnoughFunds:
-	        loggin.error("Not enough funds confirmed to make the transaction. %s" %wallet.get_addr_balance(address_origin))
+	        logging.error("Not enough funds confirmed to make the transaction. %s %s %s" %wallet.get_addr_balance(address_origin))
                 exit(1)    
     wallet.sign_transaction(tx, password)
     rec_tx_state, rec_tx_out = wallet.sendtx(tx)
@@ -156,5 +156,5 @@ if __name__ == '__main__':
 
     wallet.start_threads(network)
     cmd_wallet = electrum_fair.commands.Commands(c, wallet, network)
-    make_transaction_from_address('fHddAEGtTtv1YrxyvguoCatvNkKiDWNnkR','fT6fArCWPKv8skvaV5QnvZKYhksEhfYJsn',1)    
+    make_transaction_from_address('fYvakbTMSVJqv2gvMoyCMeeZTiidjWvDNq','fT6fArCWPKv8skvaV5QnvZKYhksEhfYJsn',1)    
     
