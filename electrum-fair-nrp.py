@@ -87,8 +87,9 @@ def getbalance():
     return wallet.get_balance()
 
 def make_transaction_from_address(address_origin, address_end, amount):
-    coins = wallet.get_spendable_coins()
-    print coins
+    inputs = [address_origin]
+    coins = wallet.get_spendable_coins(domain = inputs)
+    #print coins
     amount_total = ( 1.e6 * float(amount) ) - float(network_fee)
     amount_total = int(amount_total)
 
@@ -100,9 +101,7 @@ def make_transaction_from_address(address_origin, address_end, amount):
     try:
         tx = wallet.make_unsigned_transaction(coins, output, change_addr=address_origin)
     except NotEnoughFunds:
-	        print "Not enough funds confirmed to make the transaction. Delaying..."
-                print wallet.get_balance()
-                print wallet.get_balance('fYvakbTMSVJqv2gvMoyCMeeZTiidjWvDNq')
+	        loggin.error("Not enough funds confirmed to make the transaction. %s" %wallet.get_addr_balance(address_origin))
                 exit(1)    
     wallet.sign_transaction(tx, password)
     rec_tx_state, rec_tx_out = wallet.sendtx(tx)
@@ -153,18 +152,9 @@ if __name__ == '__main__':
         wallet = electrum_fair.wallet.Wallet.from_seed(seed, password, storage)
     else:
         wallet = electrum_fair.wallet.Wallet(storage)
-    #wallet.use_change = False
-    #wallet.synchronize = lambda: None # prevent address creation by the wallet
+    
+
     wallet.start_threads(network)
-    wallet.add_address('fHddAEGtTtv1YrxyvguoCatvNkKiDWNnkR')
-    #print wallet.check_history()
-    wallet.load_accounts()
-    wallet.synchronize()
-    wallet.update()
-    #cmd_wallet = electrum_fair.commands.Commands(c, wallet, network)
-    print wallet.is_mine('fHddAEGtTtv1YrxyvguoCatvNkKiDWNnkR')
-    print wallet.is_used('fHddAEGtTtv1YrxyvguoCatvNkKiDWNnkR')
-    print wallet.get_addr_received('fHddAEGtTtv1YrxyvguoCatvNkKiDWNnkR')
-    #print wallet.get_account_addresses('fYvakbTMSVJqv2gvMoyCMeeZTiidjWvDNq')
+    cmd_wallet = electrum_fair.commands.Commands(c, wallet, network)
     make_transaction_from_address('fHddAEGtTtv1YrxyvguoCatvNkKiDWNnkR','fT6fArCWPKv8skvaV5QnvZKYhksEhfYJsn',1)    
     
