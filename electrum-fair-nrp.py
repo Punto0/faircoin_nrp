@@ -68,12 +68,12 @@ def is_mine(address):
 
 #read the history of an address
 def get_address_history(address):
-    return wallet.get_adress_history(adress)
+    return wallet.get_adress_history(address)
 
 # make a transfer from an adress of the wallet 
 def make_transaction_from_address(address_origin, address_end, amount):
     if not is_mine(address_origin): 
-        logging.error("The address %s does not belong to this wallet" %adddress_origin)
+        logging.error("The address %s does not belong to this wallet" %address_origin)
         return False
     if not is_valid(address_end):
         logging.error("The address %s is not a valid faircoin address" %address_end)
