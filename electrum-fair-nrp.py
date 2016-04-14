@@ -104,8 +104,18 @@ def make_transaction_from_address(address_origin, address_end, amount):
          logging.error("Sending %s fairs to the address %s" %(amount_total, address_end ) )
          return False
          
+def address_history_info(address):
+    """ Return dict with info of all transactions of the address history"""
+    return_history = []
+    history = cmd_wallet.getaddresshistory(address)
+    for one_transaction in history:
+        raw_transaction = cmd_wallet.gettransaction(one_transaction['tx_hash'])
+        info_transaction = raw_transaction.deserialize()
+        return_history.append({'tx_hash': one_transaction['tx_hash'], 'tx_data': info_transaction})
+    return return_history
+
 # create new address for users or any other entity
-def new_fair_address(id, entity = 'generic'):
+def new_fair_address(entity_id, entity = 'generic'):
     """ Return a new address labeled or False if there's no network connection. 
     The label is for debugging proposals. It's like 'entity: id'
     We can label like "user: 213" or "user: pachamama" or "order: 67".
@@ -117,7 +127,7 @@ def new_fair_address(id, entity = 'generic'):
         # It checks if address is labeled or has history yet, a gap limit protection. 
         # This can be removed when we have good control of gap limit.     
         if not check_label[0] and not check_history:
-            wallet.set_label(new_address, entity + ': ' + str(id))
+            wallet.set_label(new_address, entity + ': ' + str(entity_id))
             return new_address
     return False
 
