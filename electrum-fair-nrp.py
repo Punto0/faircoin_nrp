@@ -40,6 +40,7 @@ network_fee = config.get('network','fee')
 
 logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(levelname)s %(message)s')
 
+# Stop electrum
 def do_stop():
     network.stop_daemon()
     if network.is_connected():
@@ -47,46 +48,37 @@ def do_stop():
     logging.debug("Stopping")    
     return "ok"
 
-def process_request(amount, faircoin_address):
-    logging.debug("New payment request received. Amount : %s -- To address : %s" %(amount, faircoin_address))
-    try:
-        amount = float(amount)
-    except Exception:
-        return "incorrect parameters"
-    # Perhaps here we should validate the faircoin address more properly 
-    if not faircoin_address:
-         logging.error("We have not the faircoin address")
-         return 0
-  
-    amount_total = ( 1.e6 * float(amount) ) - float(network_fee)
-    amount_total = int(amount_total)
-
-    if amount_total > 0:
-        output = [('address', faircoin_address, int(amount_total))] 
-    else:
-        logging.error("Amount negative: %s" %(amount_total) )
-        return 0
-    # Create the transaction
-    try:  
-        tx = wallet.mktx(output, password)
-    except NotEnoughFunds:	
-	logging.error("Not enough funds confirmed to make the transactions.")
-        return 2
-    
-    # Here we go...
-    rec_tx_state, rec_tx_out = wallet.sendtx(tx)
-    if rec_tx_state:
-         logging.info("SUCCES. The transaction has been broadcasted.")
-    else:
-         logging.error("Sending %s fairs to the address %s" %(amount_total, faircoin_address ) )
-         return 0 
-
-    return 1
-
-def getbalance():
+# get the total balance for the wallet
+# Returns a tupla with 3 values: Confirmed, Unmature, Unconfirmed
+def get_balance():
     return wallet.get_balance()
 
+# get the balance for a determined address
+# Returns a tupla with 3 values: Confirmed, Unmature, Unconfirmed
+def get_address_balance(address)
+    return wallet.get_balance(address)
+
+#check if an address is valid
+def is_valid(address):
+    return wallet.is_address(address)
+
+#check if an address is from the wallet
+def is_mine(address):
+    return wallet.is_mine()
+
+#read the history of an address
+def get_address_history(address):
+    return wallet.get_adress_history(adress)
+
+# make a transfer from an adress of the wallet 
 def make_transaction_from_address(address_origin, address_end, amount):
+    if not is_mine(address_origin): 
+        logging.error("The address %s does not belong to this wallet" %adddress_origin)
+        return False
+    if not is_valid(address_end):
+        logging.error("The address %s is not a valid faircoin address" %address_end)
+        return False
+
     inputs = [address_origin]
     coins = wallet.get_spendable_coins(domain = inputs)
     #print coins
@@ -97,20 +89,22 @@ def make_transaction_from_address(address_origin, address_end, amount):
         output = [('address', address_end, int(amount_total))] 
     else:
         logging.error("Amount negative: %s" %(amount_total) )
-        return 0
+        return False
     try:
         tx = wallet.make_unsigned_transaction(coins, output, change_addr=address_origin)
     except NotEnoughFunds:
 	        logging.error("Not enough funds confirmed to make the transaction. %s %s %s" %wallet.get_addr_balance(address_origin))
-                exit(1)    
+                return False
     wallet.sign_transaction(tx, password)
     rec_tx_state, rec_tx_out = wallet.sendtx(tx)
     if rec_tx_state:
          logging.info("SUCCESS. The transaction has been broadcasted.")
+         return True
     else:
          logging.error("Sending %s fairs to the address %s" %(amount_total, address_end ) )
+         return False
          
-
+# create new address for users or any other entity
 def new_fair_address(id, entity = 'generic'):
     """ Return a new address labeled or False if there's no network connection. 
     The label is for debugging proposals. It's like 'entity: id'
@@ -127,7 +121,8 @@ def new_fair_address(id, entity = 'generic'):
             return new_address
     return False
 
-if __name__ == '__main__':
+# init the wallet
+def init():
     logging.debug("---------------------------------")
     logging.debug("Starting payment daemon")
     # start network
@@ -155,6 +150,5 @@ if __name__ == '__main__':
     
 
     wallet.start_threads(network)
-    cmd_wallet = electrum_fair.commands.Commands(c, wallet, network)
-    make_transaction_from_address('fYvakbTMSVJqv2gvMoyCMeeZTiidjWvDNq','fT6fArCWPKv8skvaV5QnvZKYhksEhfYJsn',1)    
+    cmd_wallet = electrum_fair.commands.Commands(c, wallet, network)  
     
