@@ -64,7 +64,7 @@ def is_valid(address):
 
 #check if an address is from the wallet
 def is_mine(address):
-    return wallet.is_mine()
+    return wallet.is_mine(address)
 
 #read the history of an address
 def get_address_history(address):
