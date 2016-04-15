@@ -131,6 +131,10 @@ def new_fair_address(entity_id, entity = 'generic'):
             return new_address
     return False
 
+#Check if it is connected to the electum network
+def is_connected():
+        return network.is_connected()
+
 # init the wallet
 def init():
     logging.debug("---------------------------------")
