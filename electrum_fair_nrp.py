@@ -55,7 +55,7 @@ def get_balance():
 
 # get the balance for a determined address
 # Returns a tupla with 3 values: Confirmed, Unmature, Unconfirmed
-def get_address_balance(address)
+def get_address_balance(address):
     return wallet.get_balance(address)
 
 #check if an address is valid
