@@ -17,12 +17,14 @@ Archivos
           [network]
               fee = 1000 ; In satoshis ( 1000 satoshis = 0.001 FAI) The fee of the FairCoin network to make a single transaction, is substracted to the total amount in a transfer. This is for debugging purpouses, this param should not be changed.
 
-Funciones básicas:
+Basic functions
 
     -- init()
-        Es la función que arranca la red electrum, inicializa la cartera si no ha sido creada previamente. Debe ser llamada antes de ninguna otra función.
+        Starts the electrum network.
+        Create the wallet if not created before. 
+        Must be called before any function.
 
-    -- get_balance_address(address):
+    -- get_balance_address(address)
         address is a wallet's address.
         Returns the number of FairCoins in a single address.
 
@@ -43,7 +45,16 @@ Funciones básicas:
         We can label like "user: 213" or "user: pachamama" or "order: 67".
 
 Usage
-    Import the electrum_fair_nrp.py file in your project.
-    Setup your wallet in the file electrum-fair-nrp.conf.
-    Call the init() function.
-    Use the wallet calling functions. 
+
+    * Import the electrum_fair_nrp.py file in your project.
+    * Setup your wallet in the file electrum-fair-nrp.conf.
+    * Call the init() function.
+    * Use the wallet calling functions. 
+
+Contributors
+
+    Xavip https://github.com/XaviP
+    Bob Haugen https://github.com/bhaugen
+    Santi https://github.com/Punto0
+
+    This is a colaborative project from FairCoop and Freedom Coop
