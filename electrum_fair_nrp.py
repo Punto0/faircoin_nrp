@@ -40,6 +40,10 @@ network_fee = config.get('network','fee')
 
 logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(levelname)s %(message)s')
 
+wallet = False
+network = False
+cmd_wallet = False
+
 # Stop electrum
 def do_stop():
     network.stop_daemon()
@@ -137,7 +141,9 @@ def is_connected():
 
 # init the wallet
 def init():
-    logging.debug("---------------------------------")
+    global wallet
+    global network
+    global cmd_wallet
     logging.debug("Starting electrum-fair-nrp")
     # start network
     c = electrum_fair.SimpleConfig({'wallet_path':wallet_path})
