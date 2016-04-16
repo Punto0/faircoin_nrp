@@ -60,7 +60,7 @@ def get_balance():
 # get the balance for a determined address
 # Returns a tupla with 3 values: Confirmed, Unmature, Unconfirmed
 def get_address_balance(address):
-    return wallet.get_balance(address)
+    return wallet.get_balance([address])
 
 #check if an address is valid
 def is_valid(address):
@@ -72,7 +72,7 @@ def is_mine(address):
 
 #read the history of an address
 def get_address_history(address):
-    return wallet.get_adress_history(address)
+    return wallet.get_address_history(address)
 
 # make a transfer from an adress of the wallet 
 def make_transaction_from_address(address_origin, address_end, amount):
@@ -168,7 +168,8 @@ def init():
     else:
         wallet = electrum_fair.wallet.Wallet(storage)
     
-
+    wallet.synchronize = lambda: None # prevent address creation by the wallet
+    #wallet.change_gap_limit(100)  
     wallet.start_threads(network)
     cmd_wallet = electrum_fair.commands.Commands(c, wallet, network)  
     
