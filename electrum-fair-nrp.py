@@ -138,7 +138,7 @@ def is_connected():
 # init the wallet
 def init():
     logging.debug("---------------------------------")
-    logging.debug("Starting payment daemon")
+    logging.debug("Starting electrum-fair-nrp")
     # start network
     c = electrum_fair.SimpleConfig({'wallet_path':wallet_path})
     daemon_socket = electrum_fair.daemon.get_daemon(c, True)
