@@ -60,7 +60,7 @@ def get_address_balance(address)
 
 #check if an address is valid
 def is_valid(address):
-    return wallet.is_address(address)
+    return cmd_wallet.verifyaddress(address)
 
 #check if an address is from the wallet
 def is_mine(address):
