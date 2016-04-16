@@ -7,8 +7,8 @@ La versión de electrum-fair usada es la 2.3.3. Simplemente cambiando la línea 
 
 Archivos
 
-    -- electrum_fair_nrp.py: Almacén de funciones que lidian con electrum-fair
-    -- electrum-fair-nrp.conf: Parámetros de configuración de la cartera.
+    -- electrum_fair_nrp.py: The library file
+    -- electrum-fair-nrp.conf: wallet settings
           [electrum]
               wallet_path = Path to the file of the wallet. If not exists, init will create one at first time
               seed = A valid seed for electrum. Only used to create the wallet
@@ -21,7 +21,7 @@ Basic functions
 
     -- init()
         Starts the electrum network.
-        Create the wallet if not created before. 
+        Creates the wallet if not created before. 
         Must be called before any function.
 
     -- get_balance_address(address)
@@ -29,7 +29,7 @@ Basic functions
         Returns the number of FairCoins in a single address.
 
     -- make_transaction_from_address(address_origin, address_end, amount)
-        Create, sign and broadcast a transaction from address_origin to address_end.
+        Creates, signs and broadcasts a transaction from address_origin to address_end.
         address_origin: A wallet's address where the funds go out.
         address_end: A FairCoin's valid address where the funds will arrive.
         amount: The number of FairCoins of the transaction.
@@ -46,8 +46,11 @@ Basic functions
 
 Usage
 
-    * Import the electrum_fair_nrp.py file in your project.
+    * Install the electrum-fair wallet in your system:
+          - Install the following packages on your system: sudo apt-get install python-pip python-qt4
+          - sudo pip install https://electrum.fair-coin.org/download/Electrum-fair-2.3.3.tar.gz
     * Setup your wallet in the file electrum-fair-nrp.conf.
+    * Import the electrum_fair_nrp.py file in your project.
     * Call the init() function.
     * Use the wallet calling functions. 
 
