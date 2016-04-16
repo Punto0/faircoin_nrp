@@ -5,14 +5,14 @@ El objetivo de éste proyecto es proporcionar un interface muy sencillo que trab
 
 La versión de electrum-fair usada es la 2.3.3. Simplemente cambiando la línea import electrum-fair debería de ser capaz de usar bitcoins o cualquier otra criptomoneda a la que se haya portado la cartera electrum.
 
-Archivos
+Files
 
     -- electrum_fair_nrp.py: The library file
     -- electrum-fair-nrp.conf: wallet settings
           [electrum]
               wallet_path = Path to the file of the wallet. If not exists, init will create one at first time
-              seed = A valid seed for electrum. Only used to create the wallet
-              password = The wallet0s password. Used creating the wallet and making transfers.
+              seed = A valid seed for electrum. Seeds in different languages than english can not work. Only used to create the wallet, can be deleted later.
+              password = The wallet's password. Used when creating the wallet and making transfers. If not needed make transfer you can delete it. 
 
           [network]
               fee = 1000 ; In satoshis ( 1000 satoshis = 0.001 FAI) The fee of the FairCoin network to make a single transaction, is substracted to the total amount in a transfer. This is for debugging purpouses, this param should not be changed.
