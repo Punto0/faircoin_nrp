@@ -1,4 +1,4 @@
-# faircoin-nrp
+# faircoin_nrp
 faircoins payments for nrp
 
 El objetivo de éste proyecto es proporcionar un interface muy sencillo que trabaje con la cartera electrum-fair de forma que sea fácil integrar operaciones con FairCoins en cualquier aplicación. Ha sido creado para integrar FairCoin en NRP desarrollado por http://mikorizal.org , pero dada su naturaleza puede ser utilizado en cualquier aplicación.
@@ -10,9 +10,9 @@ Files
     -- electrum_fair_nrp.py: The library file
     -- electrum-fair-nrp.conf: wallet settings
           [electrum]
-              wallet_path = Path to the file of the wallet. If not exists, init will create one at first time
+              wallet_path = Path to the file of the wallet. If the file does not exist, init() will create one the first time is called.
               seed = A valid seed for electrum. Seeds in different languages than english can not work. Only used to create the wallet, can be deleted later.
-              password = The wallet's password. Used when creating the wallet and making transfers. If not needed make transfer you can delete it. 
+              password = The wallet's password. Used when creating the wallet and making transfers.
 
           [network]
               fee = 1000 ; In satoshis ( 1000 satoshis = 0.001 FAI) The fee of the FairCoin network to make a single transaction, is substracted to the total amount in a transfer. This is for debugging purpouses, this param should not be changed.
@@ -33,6 +33,7 @@ Basic functions
         address_origin: A wallet's address where the funds go out.
         address_end: A FairCoin's valid address where the funds will arrive.
         amount: The number of FairCoins of the transaction.
+        Returns False on failure (for example NotEnoughFunds) or the hash of the transaction if success.
 
     -- address_history_info(address)
         Returns dict with info of all transactions of the address history.
