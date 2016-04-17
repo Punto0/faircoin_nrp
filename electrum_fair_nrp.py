@@ -103,7 +103,7 @@ def make_transaction_from_address(address_origin, address_end, amount):
     rec_tx_state, rec_tx_out = wallet.sendtx(tx)
     if rec_tx_state:
          logging.info("SUCCESS. The transaction has been broadcasted.")
-         return True
+         return rec_tx_out
     else:
          logging.error("Sending %s fairs to the address %s" %(amount_total, address_end ) )
          return False
