@@ -109,10 +109,14 @@ def make_transaction_from_address(address_origin, address_end, amount):
          return False
          
 def address_history_info(address):
-    """ Return dict with info of all transactions of the address history"""
+    """Return list with info of last 10 transactions of the address history"""
     return_history = []
+    tx_num = 0
     history = cmd_wallet.getaddresshistory(address)
     for one_transaction in history:
+        tx_num += 1
+        if tx_num > 10:
+            return return_history
         raw_transaction = cmd_wallet.gettransaction(one_transaction['tx_hash'])
         info_transaction = raw_transaction.deserialize()
         return_history.append({'tx_hash': one_transaction['tx_hash'], 'tx_data': info_transaction})
