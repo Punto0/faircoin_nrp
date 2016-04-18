@@ -108,14 +108,14 @@ def make_transaction_from_address(address_origin, address_end, amount):
          logging.error("Sending %s fairs to the address %s" %(amount_total, address_end ) )
          return False
          
-def address_history_info(address):
-    """Return list with info of last 10 transactions of the address history"""
+def address_history_info(address, page = 0, items = 20):
+    """Return list with info of last 20 transactions of the address history"""
     return_history = []
-    tx_num = 0
     history = cmd_wallet.getaddresshistory(address)
-    for one_transaction in history:
+    tx_num = 0
+    for i, one_transaction in enumerate(history, start = page * items):
         tx_num += 1
-        if tx_num > 10:
+        if tx_num > items:
             return return_history
         raw_transaction = cmd_wallet.gettransaction(one_transaction['tx_hash'])
         info_transaction = raw_transaction.deserialize()
