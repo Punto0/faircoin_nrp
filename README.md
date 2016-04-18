@@ -36,7 +36,7 @@ Basic functions
         Returns False on failure (for example NotEnoughFunds) or the hash of the transaction if success.
 
     -- address_history_info(address)
-        Returns dict with info of all transactions of the address history.
+        Return list with info of last 10 transactions of the address history.
         address is a wallet's address.
 
     -- def new_fair_address(entity_id, entity = 'generic')
