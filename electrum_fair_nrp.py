@@ -139,6 +139,11 @@ def new_fair_address(entity_id, entity = 'generic'):
             return new_address
     return False
 
+def get_confirmations(tx):
+    """Return the number of confirmations of a monitored transaction
+    and the timestamp of the last confirmation (or None if not confirmed)."""
+    return wallet.get_confirmations(tx)
+
 #Check if it is connected to the electum network
 def is_connected():
         return network.is_connected()
